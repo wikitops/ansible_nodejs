@@ -8,5 +8,10 @@
     - gcc-c++
     - make
 
-- name: NODEJS REDHAT | Configure repositories
-  command: curl -sL https://rpm.nodesource.com/setup_{{ nodejs_version }} | sudo -E bash -
+- name: NODEJS DEBIAN | Download configuration script
+  get_url:
+    url: https://rpm.nodesource.com/setup_{{ nodejs_version }}
+    dest: /tmp/nodejs_{{ nodejs_version }}.sh
+    owner: root
+    group: root
+    mode: 0744

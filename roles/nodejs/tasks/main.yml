@@ -8,6 +8,9 @@
   import_tasks: debian.yml
   when: ansible_os_family == "Debian"
 
+- name: NODEJS | Configure repositories
+  command: "/tmp/nodejs_{{ nodejs_version }}.sh"
+
 - name: NODEJS | Installation
   package:
     name: nodejs
