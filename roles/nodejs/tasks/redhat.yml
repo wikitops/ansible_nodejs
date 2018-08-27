@@ -1,0 +1,12 @@
+---
+
+- name: NODEJS REDHAT | Install prerequisites
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - gcc-c++
+    - make
+
+- name: NODEJS REDHAT | Configure repositories
+  command: curl -sL https://rpm.nodesource.com/setup_{{ nodejs_version }} | sudo -E bash -

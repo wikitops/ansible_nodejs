@@ -1,0 +1,12 @@
+---
+
+- name: NODEJS DEBIAN | Install prerequisites
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - curl
+    - python-software-properties
+
+- name: NODEJS DEBIAN | Configure repositories
+  command: curl -sL https://deb.nodesource.com/setup_{{ nodejs_version }} | sudo -E bash -

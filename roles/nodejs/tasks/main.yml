@@ -1,0 +1,49 @@
+---
+
+- name: NODEJS | Manage RedHat environment
+  import_tasks: redhat.yml
+  when: ansible_os_family == "RedHat"
+
+- name: NODEJS | Manage Debian environment
+  import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: NODEJS | Installation
+  package:
+    name: nodejs
+    state: present
+
+- name: NODEJS | Create diretory
+  file:
+    path: "{{ npm_config_directory }}"
+    owner: "{{ nodejs_npm_user }}"
+    group: "{{ nodejs_npm_user }}"
+    mode: 0755
+    state: directory
+
+- name: NODEJS | Configure PATH
+  lineinfile:
+    path: /etc/environment
+    state: present
+    line: "{{ item }}"
+  with_items:
+    - "export PATH={{ npm_config_directory }}/bin:$PATH"
+    - "export NPM_CONFIG_PREFIX={{ npm_config_directory }}"
+    - "export NODE_PATH=$NODE_PATH:{{ npm_config_directory }}/lib/node_modules"
+
+- name: NODEJS | Ensure npm global packages are installed
+  npm:
+    name: "{{ item.name }}"
+    version: "{{ item.version | default('latest') }}"
+    global: yes
+    state: latest
+  environment:
+    NPM_CONFIG_PREFIX: "{{ npm_config_directory }}"
+    NODE_PATH: "{{ npm_config_directory }}/lib/node_modules"
+    NPM_CONFIG_UNSAFE_PERM: "{{ npm_config_unsafe_perm }}"
+  with_items: "{{ nodejs_npm_global_packages }}"
+
+- name: NODEJS | Install packages defined in a given package.json
+  npm:
+    path: "{{ nodejs_package_json_path }}"
+  when: nodejs_package_json_path is defined and nodejs_package_json_path

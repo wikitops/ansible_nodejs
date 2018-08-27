@@ -1,0 +1,7 @@
+---
+
+- hosts: nodejs
+  remote_user: vagrant
+  become: yes
+  roles:
+    - nodejs
