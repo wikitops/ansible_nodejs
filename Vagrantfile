@@ -5,15 +5,15 @@ Vagrant.configure("2") do |config|
 
   config.vm.box = "ubuntu/xenial64"
 
-  # Magnolia
+  # NodeJS
   (1..1).each do |i|
     config.vm.provider "virtualbox" do |vb|
       vb.memory = 2048
       vb.cpus = 2
     end
 
-    config.vm.define "magnolia0#{i}" do |server|
-      server.vm.hostname = "magnolia0#{i}"
+    config.vm.define "nodejs0#{i}" do |server|
+      server.vm.hostname = "nodejs0#{i}"
       server.vm.network "private_network", ip: "10.0.4.5#{i}"
     end
   end
