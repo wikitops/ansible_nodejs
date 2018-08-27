@@ -25,14 +25,12 @@
     state: directory
 
 - name: NODEJS | Configure PATH
-  lineinfile:
-    path: /etc/environment
-    state: present
-    line: "{{ item }}"
-  with_items:
-    - "export PATH={{ npm_config_directory }}/bin:$PATH"
-    - "export NPM_CONFIG_PREFIX={{ npm_config_directory }}"
-    - "export NODE_PATH=$NODE_PATH:{{ npm_config_directory }}/lib/node_modules"
+  template:
+    src: etc/profile.d/npm.sh.j2
+    dest: /etc/profile.d/npm.sh
+    owner: root
+    group: root
+    mode: 0644
 
 - name: NODEJS | Ensure npm global packages are installed
   npm:
