@@ -2,11 +2,10 @@
 
 - name: NODEJS DEBIAN | Install prerequisites
   apt:
-    name: "{{ item }}"
-    state: present
-  with_items:
+    name:
     - curl
-    - python-software-properties
+    - python3-software-properties
+    state: present
 
 - name: NODEJS DEBIAN | Download configuration script
   get_url:
